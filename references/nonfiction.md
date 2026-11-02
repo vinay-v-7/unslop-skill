@@ -1,5 +1,7 @@
 # Non-fiction mapping (unvalidated)
 
+Loaded from the v2 router for longform-nonfiction (high-confidence rows only unless asked). Not a default Pass S file. Under the length gate, short modes skip this page.
+
 **WARNING — open every use with this:** Nothing in this table is measured. STORYSCOPE corpus ≈5,000-word literary fiction; subplot/anachrony have no direct counterpart in a changelog. Mapping is reasoned from **mechanism** → expository analogue — **hypothesis**, not evidence. Keep fiction rubric ([structural.md](structural.md)) and this layer separate. Under ~1,000 words this page does not apply (route to Pass S / [surface.md](surface.md)).
 
 **Last reviewed:** 2026-09-29 · status: hypothesis

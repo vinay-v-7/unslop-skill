@@ -1,49 +1,52 @@
-# Claude fingerprints — self-audit
+# Fingerprints — fiction structure and current-model tics
 
-**Evidence:** T1 · STORYSCOPE Table 17. **Version pin:** corpus model **Sonnet 4.6**. Re-check when the skill's target Claude generation changes — not on a calendar.
+## 1. STORYSCOPE fiction (Sonnet 4.6 pin)
 
-**Last reviewed (fingerprints):** 2026-09-29 · pin Sonnet 4.6
+**Evidence:** T1 · Russell et al., *StoryScope*, COLM 2026, arXiv:2604.03136v6, Table 17. **Corpus model: Sonnet 4.6.** Stated plainly: these fiction fingerprints were measured on Sonnet 4.6, not on Opus 5.5 or later. Re-check when the skill's target Claude generation for fiction changes — not on a calendar. Full rubric: [structural.md](structural.md).
 
-**Context:** Claude reaches 77.1% per-class F1 on narrative features alone; 26 fingerprint features (vs Kimi 3). Paper line: “Claude keeps it cool” — restraint, lowest event escalation, most uniform voice, reverent/continuist 62% vs 39–56% others; favors epilogues; avoids dreams; quiet over “avalanche” endings.
+Claude on that corpus: 77.1% per-class F1 on narrative features; 26 fingerprint features. Paper line: "Claude keeps it cool" — restraint, lowest event escalation, most uniform voice, reverent/continuist 62%, favors epilogues, avoids dreams, quiet over avalanche endings.
 
-Use during Phase B (live constraints) and as a Claude-specific Pass S adjunct for fiction/long narrative. Do not apply fiction fingerprints mechanically to short LinkedIn posts.
+Use for fiction of 1,500+ words (STORYSCOPE A→B→C) and as a Claude-specific check on long narration. Do not apply this section to short posts, email, or academic abstracts.
 
----
-
-## Top fingerprints (Table 17 top 5 of 26)
-
-| Fingerprint | Dim | SHAP | Uniq. | Counter-move |
-|---|---|---|---|---|
-| Strength of event escalation | EVT | 0.402 | 22.4 | Plot stakes beat-by-beat; if beat 8 ≈ beat 3, flat in a Claude-identifying way. Loudest per-model signal overall |
-| Event-type diversity | EVT | 0.491 | 10.7 | Highest SHAP of any fingerprint on any model. Mix registers: bureaucratic, physical, social, interpersonal |
-| Ending temporal scope → epilogue/flash-forward | TMP | 0.096 | 8.9 | Delete time-skip coda; usually no loss |
-| Dreams / visions as temporal distortion → no | TMP | 0.116 | 7.7 | Total avoidance of the irrational; consistency of refusal is the signature |
-| Setting mood → uncanny / haunted | SET | 0.059 | 4.6 | Choose mood from the material, not house tone |
-
-Remaining paper themes: event density, conflict modality, relationship trajectory, heteroglossia, closure.
-
----
-
-## 7-item self-audit checklist
-
-1. **Does intensity actually escalate?** Plot stakes beat by beat. Beat 8 ≈ beat 3 → flat Claude signature.
-2. **Is every complication the same kind?** Mix registers: bureaucratic setback, physical accident, social humiliation, betrayal.
-3. **Is there an epilogue?** Reach for time-skip codas. Delete; usually fine.
-4. **Is the ending quiet by default or by choice?** Quiet OK as choice, not reflex.
-5. **Am I honoring the genre or doing something to it?** 62% reverent/continuist. Pick the convention to break before drafting.
-6. **Does the narrative voice ever shift?** Most uniform voice of any source. Register should move with scene/character/stakes.
-7. **Have I refused the irrational?** Systematic avoid dreams/visions — not required, but total avoidance is signature.
-
-**Character introduction tip:** prefer **in-dialogue** (human fingerprint uniq 21.4); avoid in-action (Kimi’s top fingerprint).
-
----
-
-## Other models (contrast)
-
-| Source | # fp | Summary |
+| Fingerprint | Dim | Counter-move |
 |---|---|---|
-| **Human** | 32 | In-dialogue intro (uniq 21.4), single-focal narration, no direct narrator address, back-loaded revelation, crossover-genre literary ambition — targets, not contrasts |
-| **GPT-5.4** | 11 | Gossip/rumour plot, distant retrospective, more subversion, ambiguous reconciliations, ensemble social nets — most socially-oriented AI |
-| **Gemini 3 Flash** | 11 | Expanding social nets, direct speech, siege/ordeal, named personal names, frequent flashbacks; tidiest endings; 88% bleak/oppressive settings |
-| **DeepSeek V3.2** | 7 | High narrator presence, emotion via behavioural cues, atmosphere over plot, interleaved backstory, embedded storytelling; front-loads context |
-| **Kimi K2.5** | 3 | Character intro in action event, in medias res, no explicit trait labelling — fewest fps; lowest attribution F1 55.0% |
+| Event escalation flat (beat 8 ≈ beat 3) | EVT | Stakes actually move |
+| Event-type diversity low | EVT | Mix bureaucratic, physical, social, interpersonal |
+| Epilogue / flash-forward coda | TMP | Delete the time-skip; usually no loss |
+| No dreams / visions, ever | TMP | Total refusal of the irrational is the signature |
+| Setting mood → uncanny / haunted by default | SET | Mood from the material |
+
+**7-item audit (fiction narration):** (1) Do stakes escalate? (2) Are complications the same kind? (3) Epilogue? (4) Quiet by choice or reflex? (5) Honoring the genre or doing something to it? (6) Does voice shift with scene? (7) Refused the irrational as a policy?
+
+Prefer in-dialogue character intro (human fingerprint). Avoid in-action intro (Kimi). Thin: mirrored weather, reflexive embodied emotion, "understands and accepts" endings. Protect: dialogue, fragments, explicit emotion labels.
+
+---
+
+## 2. Current-model nonfiction tics (2026)
+
+Not fiction fingerprints. Use in CUT / editor self-audit for essays, articles, long-form, business. Counts in [sources.md](sources.md); patterns in [lexicon-2026.md](lexicon-2026.md).
+
+**Opus 5.x `[vendor]`:** "this matters" / "why X matters" / "dependable" / "is more than an X, it's a Y" / "looking ahead" / "adds another layer" / helpfulness frames ("can help you", "makes it easier"). Em dashes nearly absent — do not hunt remaining dashes.
+
+**GPT-6 Astra `[vendor]`:** corrective framing ("not simply X", "rather than relying on"); "another dimension"; "may/can provide"; evaluative adjectives (practical, multifaceted); verb upgrades (foster, leverage, prioritize).
+
+**Gemini 3.1 Pro `[vendor]`:** intensifiers (incredibly, absolutely), formal transitions (furthermore, additionally), "this comprehensive guide".
+
+**Mid-2026 disclaimer family `[community]`:** "should be treated as … rather than", "available information does not establish", "should not be confused with", "while specific details are limited".
+
+**Demoted:** em dash `[weak]`; GPT-4-era words at weight 0.5. One "delve" is not a verdict.
+
+---
+
+## 3. Editor self-audit
+
+Before returning, check the **running model's** tics against this file, not only the source model's.
+
+1. Did I insert "this matters", "in practice", "looking ahead", or a helpfulness frame the author did not write?
+2. Did I insert corrective framing ("not simply", "rather than relying") as a "fix"?
+3. Did I zero out dashes, triads, and fragments in the same pass? Restore the author's.
+4. Did I add a sincerity opener, a hedge, a hook, or a closing question?
+5. Did I write a stock slack line to satisfy the slack benchmark?
+6. Would three different authors' texts leave this pass with a shared 3-word phrase I introduced? If yes, delete that phrase.
+
+If any answer is yes, dial back. Then re-read [voice-preservation.md](voice-preservation.md) when the text is not AI-drafted.

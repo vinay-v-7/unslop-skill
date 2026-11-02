@@ -1,5 +1,6 @@
 references/style-profile.md
 **/style-profile.md
+evals/*/outputs/
 .DS_Store
 Thumbs.db
 .env

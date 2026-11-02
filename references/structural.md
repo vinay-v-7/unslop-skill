@@ -1,5 +1,7 @@
 # Structural rubric — 30 STORYSCOPE core features
 
+Loaded from the v2 router (SKILL.md) only when the mode allows structural phases: fiction ≥1,500 words, or longform-nonfiction high-confidence rows. Not a default Pass S file.
+
 **Evidence:** T1 · Russell et al., *StoryScope*, COLM 2026, arXiv:2604.03136v6. Means from Table 16; questions/options from Tables 14–15. Prescriptions and overshoot notes are craft guidance built on those means.
 
 **Last reviewed (structural):** durable — re-review only when STORYSCOPE-class evidence updates.

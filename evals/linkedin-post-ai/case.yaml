@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: linkedin-post-ai
+expected_outcome: |
+  /unslop short-form rewrite of an AI LinkedIn post. Reveal bridges, sincerity openers,
+  staccato stacks, and closing-question bait are gone. At least one specific from the
+  input survives. No invented anecdote. Report names short-form · AI-drafted.

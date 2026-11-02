@@ -1,9 +1,13 @@
 MIT License
 
 Copyright (c) 2026 Afanasiy
+Copyright (c) 2026 Vinay
 
-Portions adapted from https://github.com/asavvin-pixel/unslop for use as a Cursor Agent Skill.
-Structural workflow, STORYSCOPE rubric files, and routing gate are original to this Cursor skill package.
+Portions adapted from https://github.com/asavvin-pixel/unslop (MIT, Copyright (c) 2026 Afanasiy) for use as an agent skill.
+
+Ideas assimilated (not copied wholesale) from https://github.com/sergebulaev/linkedin-skills (MIT, Copyright (c) 2026 Sergey Bulaev): paragraph-density scoring, tier names, RHYTHM pass, ADD from source, over-correction guard, preserve list / VOICE-CONFLICT, interview spine. LinkedIn reach statistics, hook formulas, hashtag rules, and detector-upload scripts were not taken.
+
+Structural workflow, STORYSCOPE rubric files, genre router, and voice-preservation rules are original to this skill package.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

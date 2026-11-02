@@ -1,6 +1,6 @@
 # Author style profile (template)
 
-This file gets filled in on a calibration command ("calibrate to my style") from 3–5 texts the author wrote without AI, 2,000+ words total. The completed copy is saved as `references/style-profile.md` beside this template (Cursor: `~/.cursor/skills/unslop/references/style-profile.md`). Until that file exists, the skill runs on defaults.
+This file gets filled in on a calibration command ("calibrate to my style") from 3–5 texts the author wrote without AI, 2,000+ words total. Samples must predate the author's AI use; later mixed drafts do not count. The completed copy is saved as `references/style-profile.md` beside this template (same folder as this file; gitignored). Until that file exists, the skill runs on defaults. `git clean -fdx` will delete a filled profile — back it up first.
 
 Rules for filling it in:
 

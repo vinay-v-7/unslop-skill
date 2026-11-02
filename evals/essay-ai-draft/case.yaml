@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: essay-ai-draft
+expected_outcome: |
+  /unslop essay on an AI draft. "this matters", "is more than X", orphaned "This highlights",
+  and the recap ending are gone. The unknown effect size stays a gap. No invented study.

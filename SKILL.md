@@ -1,141 +1,140 @@
 ---
 name: unslop
 description: >
-  Improves English prose on two orthogonal axes: discourse-level narrative habits
-  measured in STORYSCOPE (structural), and typography/vocabulary tells (Unslop
-  Levels 1–2 / Pass S). Routes by length. Use when the user names Unslop or asks
-  to humanize, unslop, de-AI, remove AI style, or make writing sound less generated.
+  Rewrites and drafts English prose to cut current AI tells without flattening
+  the author's voice. Genre-aware router (short-form, essay, article, longform,
+  fiction, business, academic, technical) with forensic, strict, and aesthetic
+  tiers. Use when the user names Unslop or asks to humanize, unslop, de-AI,
+  remove AI style, or make writing sound less generated.
+license: MIT
 disable-model-invocation: true
 ---
 
 # Unslop
 
-Goal: text that reads like a thinking person wrote it, not like a model assembled it. Without a style profile the default is still the model's house voice — say so once when it matters.
-
-**Key fact.** STORYSCOPE (UMD / Google DeepMind, 61,608 texts): surface editing of AI text barely moves structure-based detection (LAMP −1.6pt). Vocabulary tells also decay by model era. What persists is how the text is built. So this skill maps:
-
-| Unslop level | Skill route |
-|---|---|
-| 1 Typography & mechanics | Pass S → [surface.md](references/surface.md) |
-| 2 Vocabulary & rhetoric | Pass S → [blacklist.md](references/blacklist.md) |
-| 3 Structure & epistemics | Phase A→B→C → [structural.md](references/structural.md); epistemics always on |
+Goal: text a thinking person wrote, not a model assembled — and not a homogenizer's average of that person. Paths below are relative to the folder containing this SKILL.md.
 
 Not a detector-evasion tool. Independent of `code-review` and `ui-ux-pro-max`.
 
-## Routing gate (do this first)
+## Tokens
 
-| Condition | Route |
+Optional, any order, from arguments or the message:
+
+- mode: `short` | `essay` | `article` | `longform` | `fiction` | `poetry` | `business` | `email` | `academic` | `technical`
+- tier: `forensic` | `strict` | `aesthetic`
+- volume: `free` | `careful` | `minimal`
+- action: `audit` (report only) or `draft` (write from notes)
+
+An explicit token wins. User override ("leave it", "it's fine") wins over every tier.
+
+## Pipeline
+
+0. **Stand down** for reference docs, changelogs, legal text, error catalogs, or when the user says the text is fine. Say so and stop.
+1. **Read the text.** Detect mode (table below; on a tie pick the more conservative and say so). Detect provenance: author, AI-drafted, mixed, unknown. Unknown is treated as author-written. Announce in one line, e.g. `Reading this as: essay · AI-drafted · strict · careful. Say so if wrong.`
+2. **SPINE.** The point in one sentence, plus claims, numbers, names, and asks that must survive.
+3. **KEEP.** At most 7 signature moves to protect ([voice-preservation.md](references/voice-preservation.md) unless AI-drafted).
+4. **STRUCTURE.** Only where the mode allows it. STORYSCOPE A→B→C for fiction of 1,500+ words. High-confidence nonfiction rows for long-form.
+5. **CUT.** Forensic first, then density scoring.
+6. **RHYTHM.** Fix only machine-flat paragraphs; edit one sentence in each ([surface.md](references/surface.md)).
+7. **ADD.** Fingerprints only from the source or the user. If missing, [interview.md](references/interview.md) — one round, ≤3 questions. Never invent.
+8. **SELF-CHECK.** Voice delta, over-correction guard, [fingerprints.md](references/fingerprints.md) §3.
+9. **REPORT.** The one-line reading, at most 3 judgment calls, `[VOICE-CONFLICT]` items, any questions. If nothing contentious and they didn't ask: skip the report.
+
+`audit`: stop after CUT (and RHYTHM flags); do not rewrite. `draft`: run the same pipeline on the first draft.
+
+## Density scoring (per paragraph)
+
+| Finding | Action |
 |---|---|
-| Tidy prose is correct (release notes, API docs, error messages) | **Stand down.** Say so and stop. |
-| Under ~1,000 words | **Pass S only.** Skip structural phases — features have no referent. |
-| Over ~1,000 words, craft / originality | **Phase A → B → C**, then Pass S last. |
-| Over ~1,000 words, reach / trust | **Pass S first**, then offer Phase C. Do not restructure unasked. |
+| Forensic hit | Always delete. |
+| Single-hit structure (reveal-bridge, negative-parallel, corrective-framing, disclaimer) | AI-drafted: fix. Author-written: `[VOICE-CONFLICT]`. Fiction dialogue: leave. |
+| Score ≥3 | Rewrite the paragraph from its spine. |
+| Score 2 | Replace the weakest hit. |
+| Score ≤1 | Leave it. |
 
-For nonfiction long-form craft routes, also read [nonfiction.md](references/nonfiction.md) (unvalidated extrapolation — use high-confidence rows only unless asked).
+Never swap in a synonym from the same list. Optional scanner, report-only: `node scripts/scan.mjs <file|-> [--mode=…] [--json] [--outline]`. The skill works without Node.
 
-## How to work
+## Anti-flat
 
-1. **Author profile.** If `references/style-profile.md` exists, read it. Profile overrides conventions (em dashes, quotes, rhythm) but **never** Epistemics. No profile + text published under the user's name: mention once that output carries house voice and offer calibration. Once per conversation.
-2. **Rewriting vs writing.** Rewriting: keep meaning, facts, genre; remove AI patterns. Writing: apply rules from the first draft.
-3. **Genre survives.** A post stays a post; an email stays an email.
-4. **Volume mode** (pick if unspecified; say which if it matters):
-   - *Free* (default for "humanize this"): delete filler; length may shrink.
-   - *Careful* (fixed formats): structure survives; length 80–110%.
-   - *Minimal* (explicit): only unambiguous AI constructions.
-5. **Read references for the route.** Pass S → surface + blacklist (+ prose-benchmarks for final check). Structural → structural (+ fingerprints for Claude self-audit in Phase B).
+- **Character floor.** Keep at least as many specifics, opinions, humor beats, and risk-taking lines as the input. Missing ones: ask, never invent. Flourishes only from the author's material.
+- **Voice delta.** Compare before and after on specifics, opinions, humor, register, inventory moves. Any loss reverts that edit. Tells are not voice.
+- **Over-correction.** Edits proportional to problems. Zero dashes, zero triads, zero fragments, every sentence 8–20 words is itself a tell. Unsure if author or model: leave it. Forbidden insertions: sincerity openers, added hedges, new hooks or closing questions, stock slack lines.
+- **Editor self-audit.** Check the output against the running model's tics (fingerprints §3).
+- **User override wins.**
 
-## Phase A — Structural planning
+## Epistemics
 
-Before prose (craft route only). Choose a short list of live constraints from the cluster rubric below — typically 3–4 axes — plus any standing items from [fingerprints.md](references/fingerprints.md). This is the only phase where structural humanizing works.
+No style profile can override this. Every substantive claim is (1) from the data, (2) computed on a named assumption, (3) judgment with basis, or (4) a gap named once.
 
-**Cluster quick rubric** (largest gaps; move toward human mean and stop; prefer subtraction on AI-elevated axes):
+Never invent specifics, examples, numbers, or thresholds for liveliness. Hedge once per limitation. Editing is not fact-checking: soften to what the text can carry, or flag missing receipts.
 
-| Cluster | Direction | One-line fix |
+**Fiction carve-out:** inventing sensory detail is fine when drafting from a brief. New events or characters in someone else's fiction are proposed, not inserted.
+
+Protect constructions AI avoids: plain is/has, plain verbs, true superlatives, honest hedges. Replacement tics: a substitute repeated across three texts, and not in the inputs, is a marker. Cure is usually absence.
+
+## Content-type detection
+
+First strong match; explicit token wins.
+
+| Signals | Mode | Length as secondary axis |
 |---|---|---|
-| Thematic over-determination | AI↑ | Cut the sentence that names the lesson; cut narrator thematic asides |
-| Sensory & embodied performativity | AI↑ | Thin body-metaphor emotion; weather can be weather |
-| Structural streamlining | AI↑ | One loose joint; not every ending is "understands and accepts" |
-| Intertextual richness | Human↑ | Name real books, brands, places, dates from source/user |
-| Reader engagement | Human↑ | Occasional direct address / fourth-wall aside (rare; high overshoot risk) |
-| Temporal complexity | Human↑ | One real jump or re-pricing reveal — not kaleidoscope |
-| Narrative diversity | Human↑ | Ambivalent protagonist; more talk; explicit emotion labels allowed |
+| Platform post, caption, thread; hook line, one-line paragraphs, hashtags | short-form | ≤~600w; longer → essay or article |
+| First-person argued thesis or reflection, one idea with a turn | essay | 600–2,500w; above that, longform |
+| Explainer, how-to, blog, newsletter, news; headings, sources | article | 500–2,500w; above that, longform |
+| Nonfiction ≥~2,500w or chaptered: feature, report, chapter | longform-nonfiction | ≥2,500w |
+| Scenes, characters, dialogue, POV; or verse | fiction | any; structural phases at ≥1,500w |
+| Salutation or sign-off, subject, memo, DM, cover letter, proposal | business | usually ≤600w |
+| Abstract, citations, methods/results, literature review | academic | any |
+| Code, CLI/API names, procedures, README, docs | technical | stand down on reference material |
 
-Full means and overshoot: [structural.md](references/structural.md).
+## Mode defaults
 
-## Phase B — Constrained drafting
+| Mode | Tier | Volume |
+|---|---|---|
+| short-form | strict | free |
+| essay | strict | careful (author) / free (AI) |
+| article | strict | careful |
+| longform | strict | careful |
+| fiction | strict on narration only | careful |
+| business | strict | free |
+| academic | forensic + academic-strict | minimal |
+| technical | forensic | minimal |
 
-Draft holding the Phase A shortlist + Claude self-audit ([fingerprints.md](references/fingerprints.md)) + style profile if present. Do not invent specifics for liveliness (see Epistemics).
+## Load map
 
-## Phase C — Structural audit
-
-Score against the rubric. Emit a **shortlist of the 3 worst cluster offenders** (full 30-row score only if asked). Anything on the AI side of the human mean returns to **Phase A as restructuring**. Never resolve Phase C findings as wording. After structure settles → Pass S.
-
-## Pass S — Surface (Levels 1–2)
-
-Orthogonal to A/B/C. Never receives Phase C findings.
-
-1. **Level 1 typography** — see [surface.md](references/surface.md): em dashes, quote consistency, sentence-case headings, bold/list debris, "Conclusion" restatements, markdown/chatbot artifacts. Grep-checkable.
-2. **Level 2 rhetoric** — read [blacklist.md](references/blacklist.md). 19 categories; judge the *habit*, not zero-hit scrubbing. Category 19 (clean slop) matters after a cleanup pass.
-3. **Safe vs rate.** Subtraction-safe constructions: delete. Overshoot-risky: reduce density, don't ban existence.
-4. **Positive check** — [prose-benchmarks.md](references/prose-benchmarks.md): length variance, slack, uneven confidence.
-5. **60-second scan** in surface.md when short on time.
-
-## Epistemics (no profile can override)
-
-Every substantive claim is one of: (1) from the data, (2) computed on a named assumption, (3) judgment with basis, (4) a gap named once.
-
-- Never invent specifics, examples, numbers, or thresholds for liveliness.
-- Hedge once per limitation, not once per sentence.
-- Editing is not fact-checking: soften to what the text can carry, or flag missing receipts.
-- **Protect human constructions** AI avoids: plain is/has; plain verbs; true superlatives; honest hedges.
-- **Replacement tics:** any substitute phrase repeated across three texts becomes a marker. Cure is usually absence.
+- Always load the mode file under `modes/`.
+- Load [voice-preservation.md](references/voice-preservation.md) unless the text is AI-drafted.
+- At strict and above, load [habits.md](references/habits.md), [lexicon-2026.md](references/lexicon-2026.md), [surface.md](references/surface.md).
+- Load the mode's named extras and `references/style-profile.md` if it exists.
+- Load nothing else. Citations: [sources.md](references/sources.md). Do not load sources.md in a normal run.
 
 ## Calibration
 
 On "calibrate to my style" / "learn my voice":
 
-1. Ask for 3–5 texts the user wrote without AI, 2,000+ words total.
+1. Ask for 3–5 texts the user wrote without AI, 2,000+ words total. Samples must predate their AI use.
 2. Fill [style-profile-template.md](references/style-profile-template.md) from observations only.
-3. Save as `references/style-profile.md` (skill folder; if unwritable, hand the user the file).
+3. Save as `references/style-profile.md` (gitignored). If unwritable, hand them the file.
 4. Show the profile; allow hand edits.
 
-On "learn from this text too": append; fresher sample wins; date the note.
-
-Limits: no invented facts, no Epistemics off, no imitate-another-author.
+On "learn from this text too": append; fresher sample wins; date the note. Limits: no invented facts, no Epistemics off, no imitate-another-author.
 
 ## Final check
 
-Mechanics grep (if shell available; profile may allow em dashes):
-
-```bash
-grep -nE '—|not just|not only|important to note|worth noting|Additionally,|Moreover|delve|tapestry|testament|serves as|stands as|boasts|In summary|Overall,|game-chang|That.s not [a-z].* That.s|The real question|Here.s the thing|Here.s what that' text.md
-```
-
-Reread:
-
-1. Every concrete detail traces to source or user — nothing invented.
-2. Thresholds have named baselines or are gone.
+1. Every concrete detail traces to source or user.
+2. Character floor held; voice delta clean.
 3. Hedges: one per limitation.
-4. No paragraph ends by restating itself.
-5. Paragraph shapes vary; genre and profile survived.
-6. **Outline test:** first sentence of every paragraph in order — if they form a tidy summary, structure is machine-shaped (exempt: specs, runbooks).
-7. **Aphorism budget:** ≤1 punchy one-liner closing a paragraph.
-8. **Slack:** ≥1 sentence at half pressure; confidence uneven ([prose-benchmarks.md](references/prose-benchmarks.md)).
-9. No replacement tics from past edits.
+4. No paragraph ends by restating itself, unless the author did that as a move.
+5. Outline test (exempt: specs, runbooks).
+6. Aphorism budget: ≤1 punchy one-liner closing a paragraph.
+7. No stock slack inserted. No replacement tics.
+8. Running-model tics (fingerprints §3) absent.
+9. Byte-identical spans the mode named (citations, code, flags, asks, deadlines, numbers) untouched.
 
-## How to report
+## Modes and extras
 
-If needed: one or two plain sentences — what was removed, any judgment call. No numbered category audits. If nothing contentious and user didn't ask: no report.
-
-## References
-
-- [structural.md](references/structural.md) — 30 STORYSCOPE features
-- [surface.md](references/surface.md) — Level 1 + Pass S procedure
-- [blacklist.md](references/blacklist.md) — 19 rhetoric categories
-- [prose-benchmarks.md](references/prose-benchmarks.md) — positive plain-prose checks
-- [fingerprints.md](references/fingerprints.md) — Claude self-audit
-- [nonfiction.md](references/nonfiction.md) — NF mapping (unvalidated)
-- [style-profile-template.md](references/style-profile-template.md) — calibration
-- [examples/mindfulness.md](examples/mindfulness.md) — before/after teaching example
-
-Surface last reviewed: 2026-09-29. Structural: durable (STORYSCOPE arXiv:2604.03136v6). Adapted in part from [asavvin-pixel/unslop](https://github.com/asavvin-pixel/unslop) (MIT).
+- [short-form](modes/short-form.md) · [essay](modes/essay.md) · [article](modes/article.md) · [longform-nonfiction](modes/longform-nonfiction.md)
+- [fiction](modes/fiction.md) (+ poetry) · [business](modes/business.md) · [academic](modes/academic.md) · [technical](modes/technical.md)
+- [interview.md](references/interview.md) · [fingerprints.md](references/fingerprints.md) · [prose-benchmarks.md](references/prose-benchmarks.md)
+- [structural.md](references/structural.md) · [nonfiction.md](references/nonfiction.md) — only when the mode says so
+- Examples: [mindfulness.md](examples/mindfulness.md), [fiction.md](examples/fiction.md), [voice-preserved.md](examples/voice-preserved.md)

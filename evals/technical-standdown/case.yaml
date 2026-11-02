@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: technical-standdown
+expected_outcome: |
+  /unslop technical on a CLI reference. The skill stands down (or a forensic-only pass
+  that does not rewrite commands/flags). Code, flags, and the SYNOPSIS stay byte-identical.

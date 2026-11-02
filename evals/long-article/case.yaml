@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: long-article
+expected_outcome: |
+  /unslop article. Vague attribution, source-gap disclaimer, -ing analysis, and
+  templated outlook are fixed. The OFGEM figure and the named plant stay.

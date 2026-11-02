@@ -6,6 +6,10 @@ What this file is not. A voice to imitate. The named-author rule in SKILL.md sta
 
 Use these as a tuning fork for the skill's default voice, and as the reference when the final check asks "does this read human". When an author profile exists, the profile wins on any conflict.
 
+**Variance is a diagnostic, not a target.** Low sentence-length SD flags a machine-flat paragraph for one edit ([surface.md](surface.md) RHYTHM). Do not chase a variance number, and do not insert a long/short seesaw.
+
+**Never insert stock slack lines.** "We'll see.", "Yeah, that would be nice.", "Or not, I don't know." are observations from Graham, not a phrase bank. Slack must already exist in the source or the author's voice. If it is missing, leave the text taut or ask — do not paste a fake shrug.
+
 ## 1. The read-aloud test
 
 Reread the finished text the way its reader will, and listen. Graham's claim in Good Writing: prose that sounds wrong usually has an idea wrong underneath, because rereading is where you catch both ("does anything catch?"). Operationally: any sentence you stumble on gets rewritten, and while rewriting, check whether the stumble was hiding a thinking error. It often is.

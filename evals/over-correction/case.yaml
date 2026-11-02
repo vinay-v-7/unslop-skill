@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: over-correction
+expected_outcome: |
+  Clean human prose comes back nearly identical and is reported clean. No stock slack
+  lines inserted. No hunt for dashes or triads that are not there.

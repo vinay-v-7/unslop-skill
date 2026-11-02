@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: voice-preservation
+expected_outcome: |
+  Quirky human blog post. Every quirk survives (lowercase start, parenthetical, "I was wrong",
+  fragment, joke, coins). At most 15% of sentences change. Structure-family hits, if any,
+  are [VOICE-CONFLICT] flags, not silent substitutions.
